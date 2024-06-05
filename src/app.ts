@@ -1,20 +1,27 @@
 import {ChatOpenAI} from "@langchain/openai";
 import * as dotenv from "dotenv";
 import {HumanMessage, SystemMessage} from "@langchain/core/messages";
+import {StringOutputParser} from "@langchain/core/output_parsers";
+import {ChatPromptTemplate} from "@langchain/core/prompts";
 
 dotenv.config();
 
 async function main() {
   const model = new ChatOpenAI({model: "gpt-3.5-turbo"});
 
-  console.log(model);
+  const systemTemplate = "Translate the following into {language}:";
 
-  const messages = [
-    new SystemMessage("Translate the following from English into Italian"),
-    new HumanMessage("You are very beautiful!"),
-  ];
+  const promptTemplate = ChatPromptTemplate.fromMessages([
+    ["system", systemTemplate],
+    ["user", "{text}"],
+  ]);
 
-  const result = await model.invoke(messages);
+  const parser = new StringOutputParser();
+
+  const chain = promptTemplate.pipe(model).pipe(parser)
+
+  const result = await chain.invoke({language: "spanish", text: "I am building a software system"});
+
   console.log(result);
 }
 
