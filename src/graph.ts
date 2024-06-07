@@ -17,6 +17,44 @@ import util from 'util'
 dotenv.config();
 
 async function main() {
+  // const model = new ChatOpenAI({
+  //   temperature: 0,
+  // }).bind({
+  //   tools: [convertToOpenAITool(new Calculator())],
+  //   tool_choice: "auto",
+  // });
+  //
+  // const graph = new MessageGraph();
+  //
+  // graph.addNode("oracle", async (state: BaseMessage[]) => {
+  //   return model.invoke(state);
+  // });
+  //
+  // graph.addNode("calculator", async (state: BaseMessage[]) => {
+  //   const tool = new Calculator();
+  //   const toolCalls =
+  //     state[state.length - 1].additional_kwargs.tool_calls ?? [];
+  //   const calculatorCall = toolCalls.find(
+  //     (toolCall) => toolCall.function.name === "calculator",
+  //   );
+  //   if (calculatorCall === undefined) {
+  //     throw new Error("No calculator input found.");
+  //   }
+  //   const result = await tool.invoke(
+  //     JSON.parse(calculatorCall.function.arguments),
+  //   );
+  //   return new ToolMessage({
+  //     tool_call_id: calculatorCall.id,
+  //     content: result,
+  //   });
+  // });
+  //
+  // graph.addEdge("calculator", END);
+  //
+  // graph.setEntryPoint("oracle");
+  //
+  // console.log(res);
+  
   const tools = [new TavilySearchResults({ maxResults: 1 })];
 
   const toolExecutor = new ToolExecutor({ tools });
